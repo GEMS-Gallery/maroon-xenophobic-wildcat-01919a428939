@@ -41,7 +41,7 @@ const AddTaxPayer: React.FC = () => {
 
   return (
     <div>
-      <h1>Add New TaxPayer</h1>
+      <h1 style={{ textAlign: 'center', textShadow: '2px 2px #000000' }}>Add New TaxPayer</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="tid"
@@ -109,7 +109,7 @@ const AddTaxPayer: React.FC = () => {
           variant="contained"
           color="primary"
           disabled={loading}
-          style={{ marginTop: '20px' }}
+          style={{ marginTop: '20px', width: '100%' }}
         >
           {loading ? <CircularProgress size={24} /> : 'Add TaxPayer'}
         </Button>

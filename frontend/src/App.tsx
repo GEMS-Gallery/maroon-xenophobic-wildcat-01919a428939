@@ -9,11 +9,17 @@ import EditTaxPayer from './components/EditTaxPayer';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#2c3e50',
+      main: '#800080',
     },
     secondary: {
-      main: '#3498db',
+      main: '#008080',
     },
+    background: {
+      default: '#008080',
+    },
+  },
+  typography: {
+    fontFamily: '"VT323", monospace',
   },
 });
 
@@ -21,9 +27,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AppBar position="static">
+      <AppBar position="static" style={{ backgroundColor: '#800080', border: '2px solid #ffffff' }}>
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h4" component="div" sx={{ flexGrow: 1, textShadow: '2px 2px #000000' }}>
             TaxPayer Records Management
           </Typography>
           <Link to="/" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>

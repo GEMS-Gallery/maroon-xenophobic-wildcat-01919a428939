@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { TextField, Button, CircularProgress } from '@mui/material';
-import DataTable from 'react-data-table-component';
+import { TextField, Button, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { backend } from '../../declarations/backend';
 
 interface TaxPayer {
@@ -51,64 +50,54 @@ const TaxPayerList: React.FC = () => {
     }
   };
 
-  const columns = [
-    {
-      name: 'TID',
-      selector: (row: TaxPayer) => Number(row.tid),
-      sortable: true,
-    },
-    {
-      name: 'First Name',
-      selector: (row: TaxPayer) => row.firstName,
-      sortable: true,
-    },
-    {
-      name: 'Last Name',
-      selector: (row: TaxPayer) => row.lastName,
-      sortable: true,
-    },
-    {
-      name: 'Address',
-      selector: (row: TaxPayer) => row.address || 'N/A',
-      sortable: true,
-    },
-    {
-      name: 'Actions',
-      cell: (row: TaxPayer) => (
-        <Link to={`/edit/${row.tid}`}>
-          <Button variant="contained" color="primary" size="small">
-            Edit
-          </Button>
-        </Link>
-      ),
-    },
-  ];
-
   return (
     <div>
-      <h1>TaxPayer Records</h1>
+      <h1 style={{ textAlign: 'center', textShadow: '2px 2px #000000' }}>TaxPayer Records</h1>
       <div style={{ display: 'flex', marginBottom: '20px' }}>
         <TextField
           label="Search by TID"
           variant="outlined"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ marginRight: '10px' }}
+          style={{ marginRight: '10px', flexGrow: 1 }}
         />
         <Button variant="contained" color="primary" onClick={handleSearch}>
           Search
         </Button>
       </div>
       {loading ? (
-        <CircularProgress />
+        <CircularProgress style={{ display: 'block', margin: '20px auto' }} />
       ) : (
-        <DataTable
-          columns={columns}
-          data={taxPayers}
-          pagination
-          highlightOnHover
-          responsive
-        />
+        <TableContainer component={Paper} style={{ backgroundColor: 'transparent' }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>TID</TableCell>
+                <TableCell>First Name</TableCell>
+                <TableCell>Last Name</TableCell>
+                <TableCell>Address</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {taxPayers.map((taxPayer) => (
+                <TableRow key={taxPayer.tid.toString()}>
+                  <TableCell>{taxPayer.tid.toString()}</TableCell>
+                  <TableCell>{taxPayer.firstName}</TableCell>
+                  <TableCell>{taxPayer.lastName}</TableCell>
+                  <TableCell>{taxPayer.address || 'N/A'}</TableCell>
+                  <TableCell>
+                    <Link to={`/edit/${taxPayer.tid}`}>
+                      <Button variant="contained" color="primary" size="small">
+                        Edit
+                      </Button>
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       )}
     </div>
   );

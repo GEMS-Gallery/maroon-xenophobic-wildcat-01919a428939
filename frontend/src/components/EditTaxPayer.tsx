@@ -64,12 +64,12 @@ const EditTaxPayer: React.FC = () => {
   };
 
   if (loading) {
-    return <CircularProgress />;
+    return <CircularProgress style={{ display: 'block', margin: '20px auto' }} />;
   }
 
   return (
     <div>
-      <h1>Edit TaxPayer</h1>
+      <h1 style={{ textAlign: 'center', textShadow: '2px 2px #000000' }}>Edit TaxPayer</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="firstName"
@@ -121,7 +121,7 @@ const EditTaxPayer: React.FC = () => {
           variant="contained"
           color="primary"
           disabled={loading}
-          style={{ marginTop: '20px' }}
+          style={{ marginTop: '20px', width: '100%' }}
         >
           {loading ? <CircularProgress size={24} /> : 'Update TaxPayer'}
         </Button>
