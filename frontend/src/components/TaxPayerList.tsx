@@ -14,6 +14,7 @@ const TaxPayerList: React.FC = () => {
   const [taxPayers, setTaxPayers] = useState<TaxPayer[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchTaxPayers();
@@ -24,9 +25,11 @@ const TaxPayerList: React.FC = () => {
       const result = await backend.getTaxPayers();
       setTaxPayers(result);
       setLoading(false);
+      setError(null);
     } catch (error) {
       console.error('Error fetching tax payers:', error);
       setLoading(false);
+      setError('An error occurred while fetching tax payers. Please try again.');
     }
   };
 
@@ -40,8 +43,10 @@ const TaxPayerList: React.FC = () => {
         } else {
           setTaxPayers([]);
         }
+        setError(null);
       } catch (error) {
         console.error('Error searching tax payer:', error);
+        setError('An error occurred while searching for the tax payer. Please try again.');
       } finally {
         setLoading(false);
       }
@@ -65,6 +70,7 @@ const TaxPayerList: React.FC = () => {
           Search
         </Button>
       </div>
+      {error && <div className="error-message">{error}</div>}
       {loading ? (
         <CircularProgress style={{ display: 'block', margin: '20px auto' }} />
       ) : (

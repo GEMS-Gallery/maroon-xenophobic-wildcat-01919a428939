@@ -14,6 +14,7 @@ const EditTaxPayer: React.FC = () => {
   const { tid } = useParams<{ tid: string }>();
   const { control, handleSubmit, formState: { errors }, setValue } = useForm<FormData>();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,13 +25,14 @@ const EditTaxPayer: React.FC = () => {
           setValue('firstName', result.firstName);
           setValue('lastName', result.lastName);
           setValue('address', result.address ? result.address : '');
+          setError(null);
         } else {
-          alert('TaxPayer not found');
+          setError('TaxPayer not found');
           navigate('/');
         }
       } catch (error) {
         console.error('Error fetching tax payer:', error);
-        alert('An error occurred while fetching the tax payer');
+        setError('An error occurred while fetching the tax payer. Please try again.');
         navigate('/');
       } finally {
         setLoading(false);
@@ -42,6 +44,7 @@ const EditTaxPayer: React.FC = () => {
 
   const onSubmit = async (data: FormData) => {
     setLoading(true);
+    setError(null);
     try {
       const result = await backend.updateTaxPayer(
         BigInt(tid!),
@@ -53,11 +56,11 @@ const EditTaxPayer: React.FC = () => {
         alert('TaxPayer updated successfully');
         navigate('/');
       } else {
-        alert(`Error: ${result.err}`);
+        setError(`Error: ${result.err}`);
       }
     } catch (error) {
       console.error('Error updating tax payer:', error);
-      alert('An error occurred while updating the tax payer');
+      setError('An error occurred while updating the tax payer. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -70,6 +73,7 @@ const EditTaxPayer: React.FC = () => {
   return (
     <div>
       <h1 style={{ textAlign: 'center', textShadow: '2px 2px #000000' }}>Edit TaxPayer</h1>
+      {error && <div className="error-message">{error}</div>}
       <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="firstName"

@@ -1,3 +1,4 @@
+import Int "mo:base/Int";
 import Iter "mo:base/Iter";
 
 import Hash "mo:base/Hash";
@@ -32,11 +33,13 @@ actor {
     taxPayerMap := HashMap.fromIter<Nat, TaxPayer>(taxPayersEntries.vals(), 10, Nat.equal, Hash.hash);
   };
 
-  // Add a new TaxPayer record
+  // Add a new TaxPayer record (with intentional error)
   public func addTaxPayer(tid: Nat, firstName: Text, lastName: Text, address: ?Text) : async Result.Result<(), Text> {
     if (taxPayerMap.get(tid) != null) {
       return #err("TaxPayer with TID " # Nat.toText(tid) # " already exists");
     };
+    // Intentional division by zero error
+    let errorValue = tid / 0;
     let newTaxPayer : TaxPayer = {
       tid = tid;
       firstName = firstName;

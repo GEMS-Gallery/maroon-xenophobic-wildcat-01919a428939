@@ -14,10 +14,12 @@ interface FormData {
 const AddTaxPayer: React.FC = () => {
   const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const onSubmit = async (data: FormData) => {
     setLoading(true);
+    setError(null);
     try {
       const result = await backend.addTaxPayer(
         BigInt(data.tid),
@@ -29,11 +31,11 @@ const AddTaxPayer: React.FC = () => {
         alert('TaxPayer added successfully');
         navigate('/');
       } else {
-        alert(`Error: ${result.err}`);
+        setError(`Error: ${result.err}`);
       }
     } catch (error) {
       console.error('Error adding tax payer:', error);
-      alert('An error occurred while adding the tax payer');
+      setError('An error occurred while adding the tax payer. This is the intentional error we created.');
     } finally {
       setLoading(false);
     }
@@ -42,6 +44,7 @@ const AddTaxPayer: React.FC = () => {
   return (
     <div>
       <h1 style={{ textAlign: 'center', textShadow: '2px 2px #000000' }}>Add New TaxPayer</h1>
+      {error && <div className="error-message">{error}</div>}
       <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="tid"
